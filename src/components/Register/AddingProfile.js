@@ -25,12 +25,26 @@ function AddingProfile() {
     }
   }
 
+  const sendVerificationEmail = async() => {
+    try {
+      await emailverification();
+      alert("Verify Your Email and Login Again")
+      signOut();
+    } catch (err) {
+      console.log('Error During sending verification email (AddingProfile.js)', err)
+    }
+  }
+
   return (
     <div>
       {
         user?.displayName
           ? <div>
-              <h1>Please Verify your Email Address</h1>
+              <h1>Hello, {user.displayName} </h1>
+              <h1>Please Verify your Email Address: {user.email} </h1>
+              <h3>If already verified, please login again</h3>
+              <button onClick={signOut} > Logout </button>
+              <button onClick={sendVerificationEmail} > Send Email Again </button>
             </div>
           : <div>        
               <input type="text" value={dname} onChange={(e) => setDName(e.target.value)} />

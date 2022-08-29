@@ -6,21 +6,26 @@ function SignIn({ changeroute, setRoute }) {
   
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [loginError, setLoginError] = useState('')
   const { googleSignIn, signIn } = UserAuth()
 
   const signInWithGoogle = async() => {
     try {
       await googleSignIn();
+      console.log('user is signed in using google "SignIn.js".')
     } catch (err) {
       console.log('error in signInWithGoogle function from "Signin.js" file', err)
     }
   }
 
   const logIn = async(email, password) => {
+    setLoginError('')
     try{
       await signIn(email, password);
-    } catch (err) {
-      console.log('error in logIn function from "Signin.js" file', err)
+      // console.log('user is signed in using email and password "SignIn.js".')
+    } catch(err) {
+      console.log('error in logIn function from "Signin.js" file: ', err.message)
+      setLoginError(err.message)
     }
   }
 
@@ -39,16 +44,25 @@ function SignIn({ changeroute, setRoute }) {
                 <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
                 <input className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="password" name="password"  id="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
               </div>
+              <h5 className='red'>{loginError}</h5>
             </fieldset>
-            <div className="mv3">
+            <div className="mv2">
               <input onClick={() => logIn(email, password)} className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" type="submit" value="Sign in"/>
             </div>
-            <div className="signinwithgoogle mv3">
+            <hr className='mv4'/>
+            <div className="signinwithgoogle mv3 center">
               {/* <input onClick={signInWithGoogle} className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" type="submit" value="Sign in with Google"/> */}
               <GoogleButton onClick={signInWithGoogle} className='pointer' />
             </div>
+            {/* <hr className='mv3'/> */}
             <div className="lh-copy mt3 mv4">
-              <a onClick={() => changeroute('register')} href="#0" className="f6 link dim black db">Register</a>
+              <p>
+                <a onClick={() => changeroute('forgotPassword')} href="#0" className="f6 link dim db b">Forgot Password ?</a>
+              </p>
+              <p className='flex items-center justify-around'>
+                <span> Don't have an account? </span> 
+                <a onClick={() => changeroute('register')} href="#0" className="f6 link dim db b"> Sign up </a>
+              </p>
             </div>
           </div>
         </main>

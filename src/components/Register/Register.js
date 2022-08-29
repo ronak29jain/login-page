@@ -6,16 +6,19 @@ function Register({ setRoute }) {
   // const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [signUpError, setSignUpError] = useState('')
   const { createUser } = UserAuth()
 
   const signUp = async() => {
+    setSignUpError('')
     try{
       await createUser(email, password);
       // await googleSignOut()
       // await setTimeout(add(name),4000);
       // setRoute('signin');
     } catch (err) {
-      console.log('error in signUp function from "Register.js" file', err)
+      console.log('error in signUp function from "Register.js" file', err.message)
+      setSignUpError(err.message)
     }
   }
 
@@ -33,7 +36,7 @@ function Register({ setRoute }) {
         <main className="pa4 black-80">
           <div className="measure">
             <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
-              <legend className="f1 fw6 ph0 mh0">Register</legend>
+              <legend className="f1 fw6 ph0 mh0">Sign Up</legend>
               <div className="mt3">
                 {/* <label className="db fw6 lh-copy f6" htmlFor="name">Name</label> */}
                 {/* <input className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="email" name="name"  id="name" value={name} onChange={(e) => setName(e.target.value)}/> */}
@@ -44,9 +47,10 @@ function Register({ setRoute }) {
                 <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
                 <input className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="password" name="password"  id="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
               </div>
+              <h5 className='red'>{signUpError}</h5>
             </fieldset>
             <div className="">
-              <input onClick={signUp} className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" type="submit" value="Register"/>
+              <input onClick={signUp} className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" type="submit" value="Sign Up"/>
             </div>
             <div className="lh-copy mt3">
               {/* <a href="#0" className="f6 link dim black db">Register</a> */}

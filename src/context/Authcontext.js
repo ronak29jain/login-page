@@ -9,7 +9,9 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
-  sendEmailVerification
+  sendEmailVerification,
+  sendPasswordResetEmail,
+  deleteUser
 } from "firebase/auth";
 
 const AuthContext = createContext()
@@ -30,8 +32,10 @@ export const AuthContextProvider = ({children}) => {
   }
 
   const createUser = (email, password) => {
-    createUserWithEmailAndPassword(auth, email, password);
-    console.log('created user')
+    return createUserWithEmailAndPassword(auth, email, password)
+      .then(() =>{
+        console.log('created user')
+      })
   }
   
   const addName = (name) => {
@@ -57,7 +61,20 @@ export const AuthContextProvider = ({children}) => {
   }
 
   const signIn = (email, password) => {
-    signInWithEmailAndPassword(auth, email, password);
+    return signInWithEmailAndPassword(auth, email, password)
+      // .then(() => {
+      //   console.log('user is signed in using email and password "Authcontext.js".')
+      // }).catch((error) => {
+      //   console.log('error in logIn function from "Authcontext.js" file', error)
+      // });
+  }
+
+  const getLinkForResettingPassword = (email) => {
+    sendPasswordResetEmail(auth, email);
+  } 
+
+  const deleteAccount = () => {
+    deleteUser(user);
   }
 
   useEffect(() => {
@@ -74,7 +91,7 @@ export const AuthContextProvider = ({children}) => {
   }, [user, user?.displayName, user0, user0?.displayName])
 
   return (
-    <AuthContext.Provider value={{ googleSignIn, googleSignOut, user, createUser, addName, signIn, user0, emailverification }} >
+    <AuthContext.Provider value={{ googleSignIn, googleSignOut, user, createUser, addName, signIn, user0, emailverification, getLinkForResettingPassword, deleteAccount }} >
       {children}
     </AuthContext.Provider>
   )

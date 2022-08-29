@@ -4,6 +4,7 @@ import Home from '../Home/Home'
 import AddingProfile from '../Register/AddingProfile';
 import SignIn from '../SignIn/SignIn'
 import Register from '../Register/Register'
+import ForgotPassword from '../Forgot_Password/ForgotPassword';
 
 import { UserAuth } from '../../context/Authcontext'
 
@@ -51,7 +52,9 @@ function Body() {
       case "register": 
         return <Register setRoute={setRoute} />;
       case "addProfile":
-        return <AddingProfile />
+        return <AddingProfile />;
+      case "forgotPassword":
+        return <ForgotPassword setRoute={setRoute} />
       default: 
         return <SignIn changeroute={changeroute} setRoute={setRoute} />;
     }
