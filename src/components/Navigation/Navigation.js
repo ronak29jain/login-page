@@ -17,7 +17,7 @@ function Navigation({changeroute}) {
   return (
     <nav className='navigation'>
       { 
-        user?.displayName ?
+        user ?
           // <p onClick={() => changeroute('signin')} className='f3 pa3 link dim black underline pointer'>Sign Out</p> :
           <p onClick={signOut} className='nav f3 pa3 link dim black underline pointer'>Sign Out</p> :
           <div className="nav">

@@ -1,13 +1,12 @@
-import React from 'react'
-// import React, { useEffect } from 'react'
+import React, { useState } from 'react'
 import { UserAuth } from '../../context/Authcontext'
-// import { useNavigate } from 'react-router-dom'
+import GoogleButton from 'react-google-button'
 
-function SignIn({checkuser, changeroute}) {
+function SignIn({ changeroute, setRoute }) {
   
-  const { googleSignIn } = UserAuth()
-  // const { googleSignIn, user } = UserAuth()
-  // const navigate = useNavigate()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const { googleSignIn, signIn } = UserAuth()
 
   const signInWithGoogle = async() => {
     try {
@@ -17,11 +16,13 @@ function SignIn({checkuser, changeroute}) {
     }
   }
 
-  // useEffect(() => {
-  //   if (user != null) {
-  //     navigate('../Home/Home')
-  //   }
-  // }, [])
+  const logIn = async(email, password) => {
+    try{
+      await signIn(email, password);
+    } catch (err) {
+      console.log('error in logIn function from "Signin.js" file', err)
+    }
+  }
 
   return (
     <div>
@@ -32,20 +33,21 @@ function SignIn({checkuser, changeroute}) {
               <legend className="f1 fw6 ph0 mh0">Sign In</legend>
               <div className="mt3">
                 <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
-                <input className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="email" name="email-address"  id="email-address"/>
+                <input className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="email" name="email-address"  id="email-address" value={email} onChange={(e) => setEmail(e.target.value)} />
               </div>
               <div className="mv3">
                 <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
-                <input className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="password" name="password"  id="password"/>
+                <input className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="password" name="password"  id="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
               </div>
             </fieldset>
-            <div className="">
-              <input onClick={checkuser} className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" type="submit" value="Sign in"/>
+            <div className="mv3">
+              <input onClick={() => logIn(email, password)} className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" type="submit" value="Sign in"/>
             </div>
-            <div className="signinwithgoogle">
-              <input onClick={signInWithGoogle} className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" type="submit" value="Sign in with Google"/>
+            <div className="signinwithgoogle mv3">
+              {/* <input onClick={signInWithGoogle} className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" type="submit" value="Sign in with Google"/> */}
+              <GoogleButton onClick={signInWithGoogle} className='pointer' />
             </div>
-            <div className="lh-copy mt3">
+            <div className="lh-copy mt3 mv4">
               <a onClick={() => changeroute('register')} href="#0" className="f6 link dim black db">Register</a>
             </div>
           </div>
